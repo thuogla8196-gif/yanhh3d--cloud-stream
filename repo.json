@@ -1,0 +1,8 @@
+{
+  "name": "YanHH3D CloudStream Repository",
+  "description": "CloudStream provider for YanHH3D",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/thuogla8196-gif/yanhh3d--cloud-stream/builds/plugins.json"
+  ]
+}
