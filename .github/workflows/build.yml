@@ -1,0 +1,61 @@
+name: Build CloudStream plugin
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Install Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Download Gradle
+        run: |
+          curl -L https://services.gradle.org/distributions/gradle-8.9-bin.zip -o /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /tmp
+
+      - name: Build plugin
+        run: /tmp/gradle-8.9/bin/gradle make makePluginsJson --stacktrace
+
+      - name: Prepare repository files
+        run: |
+          mkdir -p publish
+          find . -path '*/build/*.cs3' -exec cp {} publish/ \;
+          cp build/plugins.json publish/plugins.json
+          cp repo.json publish/repo.json
+          test -s publish/plugins.json
+          ls -lah publish
+
+      - name: Publish plugin repository
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin builds >/dev/null 2>&1; then
+            git fetch origin builds
+            git checkout -B builds origin/builds
+            git rm -rf . >/dev/null 2>&1 || true
+          else
+            git checkout --orphan builds
+            git rm -rf . >/dev/null 2>&1 || true
+          fi
+          cp -R publish/. .
+          git add -A
+          git commit -m "Publish CloudStream plugin"
+          git push origin builds --force
