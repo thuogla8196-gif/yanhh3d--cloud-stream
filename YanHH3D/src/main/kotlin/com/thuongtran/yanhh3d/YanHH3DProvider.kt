@@ -3,6 +3,7 @@ package com.thuongtran.yanhh3d
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.loadExtractor
+import com.lagradost.cloudstream3.utils.newExtractorLink
 import org.jsoup.nodes.Element
 import java.net.URLEncoder
 
@@ -76,7 +77,6 @@ class YanHH3DProvider : MainAPI() {
             posterUrl = poster
             this.plot = plot
             this.tags = tags
-            showStatus = ShowStatus.Ongoing
         }
     }
 
