@@ -20,3 +20,14 @@ If the workflow cannot push the build branch, open **Settings → Actions → Ge
 
 ## Notes
 The provider only delegates normal iframe/video playback URLs to CloudStream extractors. It does not bypass DRM, logins, or other access controls.
+
+
+## Film4K.pl add-on
+
+A separate **Film4K** provider is included alongside YanHH3D. It uses the Film4K JSON endpoints for catalogue/search and title playback data, and passes HLS master URLs to CloudStream.
+
+After the GitHub Actions build succeeds, install the repository in CloudStream with:
+
+`https://raw.githubusercontent.com/thuogla8196-gif/yanhh3d--cloud-stream/builds/repo.json`
+
+Film4K catalogue access and playback follow the access rules enforced by Film4K itself. Titles or streams that require a Film4K account may still require sign-in in the official site/app.
